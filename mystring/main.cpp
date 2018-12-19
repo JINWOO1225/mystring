@@ -25,7 +25,9 @@ public:
 	
 	void reserve(int size);
 	
-	void myStrAdd(int loc, const myString &s);	//문자열 뒤에 다른 문자열 붙이기
+	myString& myStrIns(int loc, const myString &s);	//문자열 뒤에 다른 문자열 붙이기
+	myString& myStrIns(int loc, const char* _str);
+	myString& myStrIns(int loc, char c);
 	
 	void Assign(const myString &s); 	//문자열을 재설정하는 함수
 	
@@ -92,30 +94,61 @@ void myString::reserve(int size)
 	}
 }
 
-void myString::myStrAdd(int loc, const myString &s) //문자열 뒤에 다른 문자열 붙이기
+myString& myString::myStrIns(int loc, const myString &s) //문자열 뒤에 다른 문자열 붙이기
 {
-	if(loc + s.len > capacity)
+	if(loc < 0 || loc > len) return *this;
+	
+	if(len + s.len > capacity)
 	{
-		char *prevStr = str;
+		capacity = len + s.len;
 		
-		str = new char[loc + s.len];
+		char* prevStr = str;
+		str = new char[capacity];
 		
-		for (int i = 0; i < loc ; i++)
+		int i;
+		for(i = 0; i < loc; i++ )
 		{
 			str[i] = prevStr[i];
 		}
+		for(int j = 0; j < s.len; j++)
+		{
+			str[i + j] = s.str[j];
+		}
+		for(;i < len; i++)
+		{
+			str[s.len + i] = prevStr[i];
+		}
+		delete [] prevStr;
 		
-		capacity = loc + s.len;
+		len += s.len;
+		
+		return *this;
 	}
 	
-	len = loc + s.len;
-	
-	for(int i = loc; i < loc + s.len; i++)
+	for(unsigned long i = len - 1; i>= loc; i--)
 	{
-		str[i] = s.str[i - loc];
+		str[i + s.len] = str[i];
 	}
 	
-	len = loc + s.len;
+	for(int i = 0; i < s.len; i++)
+	{
+		str[i + loc] = s.str[i];
+	}
+	
+	len += s.len;
+	return *this;
+}
+
+myString& myString::myStrIns(int loc, const char* _str)
+{
+	myString temp(_str);
+	return myStrIns(loc, temp);
+}
+
+myString& myString::myStrIns(int loc, char c)
+{
+	myString temp(c);
+	return myStrIns(loc, temp);
 }
 
 void myString::Assign(const myString &s)
@@ -176,8 +209,10 @@ int main(int argc, const char * argv[]) {
 	str1.Assign(str3);
 	str2.reserve(13);
 	
-	str2.myStrAdd(3, str3);
-		
+	str1.myStrIns(5, "Good bye");
+	str2.myStrIns(3, str3);
+	str3.myStrIns(8, 'A');
+
 	str1.print();
 	str2.print();
 	str3.print();
