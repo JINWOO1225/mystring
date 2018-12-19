@@ -96,8 +96,26 @@ void myString::myStrAdd(int loc, const myString &s) //문자열 뒤에 다른 �
 {
 	if(loc + s.len > capacity)
 	{
+		char *prevStr = str;
 		
+		str = new char[loc + s.len];
+		
+		for (int i = 0; i < loc ; i++)
+		{
+			str[i] = prevStr[i];
+		}
+		
+		capacity = loc + s.len;
 	}
+	
+	len = loc + s.len;
+	
+	for(int i = loc; i < loc + s.len; i++)
+	{
+		str[i] = s.str[i - loc];
+	}
+	
+	len = loc + s.len;
 }
 
 void myString::Assign(const myString &s)
@@ -159,9 +177,10 @@ int main(int argc, const char * argv[]) {
 	str2.reserve(13);
 	
 	str2.myStrAdd(3, str3);
+		
 	str1.print();
 	str2.print();
-	cout << str1.at(7) << endl;
+	str3.print();
 	
 	return 0;
 }
