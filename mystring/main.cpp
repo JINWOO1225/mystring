@@ -29,6 +29,8 @@ public:
 	myString& myStrIns(int loc, const char* _str);
 	myString& myStrIns(int loc, char c);
 	
+	myString& myStrErase(int loc, int num);
+	
 	void Assign(const myString &s); 	//문자열을 재설정하는 함수
 	
 	void print();
@@ -160,6 +162,20 @@ myString& myString::myStrIns(int loc, char c)
 	return myStrIns(loc, temp);
 }
 
+myString& myString::myStrErase(int loc, int num)
+{
+	if(num < 0 || loc < 0 || loc > len) return *this;
+	
+	for(int i = loc + num; i < len; i++)
+	{
+		str[i - num] = str[i];
+	}
+	
+	len -= num;
+	
+	return *this;
+}
+
 void myString::Assign(const myString &s)
 {
 	if(s.len > capacity)
@@ -221,9 +237,12 @@ int main(int argc, const char * argv[]) {
 	str1.myStrIns(5, "Good bye");
 	str2.myStrIns(3, str3);
 	str3.myStrIns(8, 'A');
-
+	
 	str1.print();
 	str2.print();
+	str3.print();
+	str3.myStrErase(8, 2);
+
 	str3.print();
 	
 	return 0;
