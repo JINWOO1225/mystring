@@ -31,6 +31,9 @@ public:
 	
 	myString& myStrErase(int loc, int num);
 	
+	int find(int find_from, myString& str);
+	int find(int find_from, const char* str);
+	int find(int find_from, char c);
 	void Assign(const myString &s); 	//문자열을 재설정하는 함수
 	
 	void print();
@@ -176,6 +179,40 @@ myString& myString::myStrErase(int loc, int num)
 	return *this;
 }
 
+int myString::find(int find_from, myString &tarStr)
+{
+	int i, j;
+	
+	if(tarStr.len == 0) return -1;
+	
+	for(i = find_from; i < len - tarStr.len; i++)
+	{
+		for(j = 0; j < tarStr.len; j++)
+		{
+			if(str[i + j] != tarStr.str[j])
+			{
+				break;
+			}
+		}
+		
+		if(j == tarStr.len) return i;
+	}
+	
+	return -1;
+}
+
+int myString::find(int find_from, const char *str)
+{
+	myString temp(str);
+	return find(find_from, temp);
+}
+
+int myString::find(int find_from, char c)
+{
+	myString temp(c);
+	return find(find_from, temp);
+}
+
 void myString::Assign(const myString &s)
 {
 	if(s.len > capacity)
@@ -224,6 +261,7 @@ int main(int argc, const char * argv[]) {
 	myString str1("Hello world");
 	myString str2 = str1;
 	myString str3("Bye & Hello world");
+	myString str4("rld");
 	
 	str1.print();
 	str2.print();
@@ -233,6 +271,7 @@ int main(int argc, const char * argv[]) {
 	
 	str1.Assign(str3);
 	str2.reserve(13);
+	str2.memCapacity();
 	
 	str1.myStrIns(5, "Good bye");
 	str2.myStrIns(3, str3);
@@ -242,6 +281,9 @@ int main(int argc, const char * argv[]) {
 	str2.print();
 	str3.print();
 	str3.myStrErase(8, 2);
+	
+	cout << str2.find(0, str4) << endl;
+	
 
 	str3.print();
 	
