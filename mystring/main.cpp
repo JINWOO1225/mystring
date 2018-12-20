@@ -100,7 +100,16 @@ myString& myString::myStrIns(int loc, const myString &s) //문자열 뒤에 다�
 	
 	if(len + s.len > capacity)
 	{
-		capacity = len + s.len;
+		
+		
+		if (capacity * 2 > len + s.len)
+		{
+			capacity *= 2;
+		}
+		else
+		{
+			capacity = len + s.len;
+		}
 		
 		char* prevStr = str;
 		str = new char[capacity];
