@@ -87,6 +87,7 @@ unsigned long myString::memCapacity()
 
 void myString::reserve(int size)
 {
+	//메모리를 미리 할당
 	if(capacity < size)
 	{
 		char *prevStr = str;
@@ -103,8 +104,9 @@ void myString::reserve(int size)
 	}
 }
 
-myString& myString::myStrIns(int loc, const myString &s) //문자열 뒤에 다른 문자열 붙이기
+myString& myString::myStrIns(int loc, const myString &s)
 {
+	//문자열 속에 입력
 	if(loc < 0 || loc > len) return *this;
 	
 	if(len + s.len > capacity)
