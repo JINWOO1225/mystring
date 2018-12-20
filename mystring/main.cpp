@@ -34,6 +34,10 @@ public:
 	int find(int find_from, myString& str);
 	int find(int find_from, const char* str);
 	int find(int find_from, char c);
+	
+	int compare(myString& cmpStr);
+	
+	
 	void Assign(const myString &s); 	//문자열을 재설정하는 함수
 	
 	void print();
@@ -252,6 +256,36 @@ char myString::at(int i)
 	}
 }
 
+int myString::compare(myString &cmpStr)
+{
+	//*this - str 을 수행 해서 그 1. 0, -1로 그결과를 리턴한다
+	//1은 (*this) 가 사전식으로 더뒤에 온다는 의미. 0은 두문자열이 같다는 의미
+	//-1은 (*this)가 사전식으로 더 앞에 온다는 의미이다.
+	
+	for(int i = 0; i < min(len, cmpStr.len); i++)
+	{
+		if(str[i] > cmpStr.str[i])
+		{
+			return 1;
+		}
+		else if (str[i] < cmpStr.str[i])
+		{
+			return -1;
+		}
+		
+	}
+	
+	if(len == cmpStr.len)
+	{
+		return 0;
+	}
+	else if (len > cmpStr.len)
+	{
+		return 1;
+	}
+	
+	return -1;
+}
 myString::~myString()
 {
 	delete [] str;
